@@ -57,7 +57,7 @@ public class BookInformation {
 
 	
 
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name="category_id", referencedColumnName = "category_id")
 	private BookCategory category = new BookCategory();
 	
@@ -67,7 +67,7 @@ public class BookInformation {
 
 	public void setCategory(BookCategory category) {
 		this.category = category;
-	}*/
+	}
 
 	public int getBookId() {
 		return bookId;
