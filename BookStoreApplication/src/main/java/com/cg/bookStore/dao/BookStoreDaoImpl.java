@@ -18,18 +18,12 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	private EntityManager em;
 
 	@Override
-	public boolean addBook(BookInformation bookInfo) {
-		em.persist(bookInfo);
-		return true;
-	} 
-	
-	@Override
-	public Boolean createCategory(BookCategory category){
+	public boolean createCategory(BookCategory category){
 		em.persist(category);
 		return true;
 	}
 	
-	public Boolean findCategory(String categoryName) {
+	public boolean findCategory(String categoryName) {
 		String jpql = "from BookCategory b where b.categoryName=:cName";
 		TypedQuery<BookCategory> query = em.createQuery(jpql, BookCategory.class);
 		query.setParameter("cName",categoryName);
@@ -39,5 +33,21 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	    }
 	    return true;
 	}
-}
 
+	@Override
+	public boolean deleteBook(int bookId) {
+		BookInformation book = em.find(BookInformation.class, bookId);
+		if(book!=null) {
+			em.remove(book);
+			return true;
+		}
+		return false;
+	}
+	
+
+	@Override
+	public boolean addBook(BookInformation bookInfo) {
+		em.persist(bookInfo);
+		return true;
+	}
+}
