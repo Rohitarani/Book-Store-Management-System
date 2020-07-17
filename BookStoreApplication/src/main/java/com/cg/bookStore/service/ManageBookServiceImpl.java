@@ -1,5 +1,8 @@
 package com.cg.bookStore.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,7 @@ public class ManageBookServiceImpl implements ManageBookService {
 	public String createBook(BookInformation book) throws BookException{
 		
 		BookInformation bookInfo=new BookInformation();
-		
+		LocalDateTime now = LocalDateTime.now();
 		String bookTitle=bookInfo.getTitle();
 		String bookDesc=bookInfo.getDescription();
 		String bookAuthor=bookInfo.getAuthor();
@@ -37,6 +40,9 @@ public class ManageBookServiceImpl implements ManageBookService {
 		String ISBNnum=bookInfo.getIsbnNumber();
 		bookInfo.getPublishDate();
 		
+		
+		
+		bookInfo.setLastUpdateTime(LocalDate.now());
 		if(bookTitle.isEmpty()) {
 			throw new BookException("Cannot add empty book title");
 		}
