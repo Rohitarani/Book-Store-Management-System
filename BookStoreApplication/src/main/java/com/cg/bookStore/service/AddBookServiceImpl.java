@@ -61,7 +61,7 @@ public class AddBookServiceImpl implements AddBookService {
 		}
 		
 		if(bookDesc.length()<200 || bookDesc.length()>2000) {
-			throw new CategoryException("book title cannot be less than 5 characters and more than 30");
+			throw new CategoryException("book description cannot be less than 200 characters and more than 2000");
 		}
 		
 		
@@ -70,7 +70,7 @@ public class AddBookServiceImpl implements AddBookService {
 		}
 		
 		if(bookAuthor.length()<5 || bookAuthor.length()>65) {
-			throw new CategoryException("book title cannot be less than 5 characters and more than 30");
+			throw new CategoryException("author name cannot be less than 5 characters and more than 65");
 		}
 		
 		
@@ -79,7 +79,7 @@ public class AddBookServiceImpl implements AddBookService {
 		}
 		
 		if(ISBNnum.length()<10 || ISBNnum.length()>15) {
-			throw new CategoryException("book title cannot be less than 5 characters and more than 30");
+			throw new CategoryException("ISBN number cannot be less than 10 characters and more than 15");
 		}
 		return "added";
 		
