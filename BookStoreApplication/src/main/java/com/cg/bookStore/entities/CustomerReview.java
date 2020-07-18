@@ -3,6 +3,8 @@ package com.cg.bookStore.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -19,27 +21,42 @@ public class CustomerReview {
 	
 	@Id
 	@Column(name="review_id")
-	private int ratingId;
+	private int reviewId;
+	
+	@Column(name="customer_id")
+	private int customerId;
 	
 	@Column(name="book_rating")
 	@Min(1)
 	@Max(2)
 	private int bookRating;
 	
-	@Column(name="review_headling")
+	@Column(name="review_headline")
 	@Size(min=20,max=128)
-	private String reviewHeadling;
+	private String reviewHeadline;
 	
 	@Column(name="review_comment",length=300)
 	@Size(min=100,max=300)
 	private String reviewComment;
 
-	public int getRatingId() {
-		return ratingId;
+	@ManyToOne
+	@JoinColumn(name="book_id", referencedColumnName = "book_id")
+	private BookInformation book = new BookInformation();
+
+	public int getReviewId() {
+		return reviewId;
 	}
 
-	public void setRatingId(int ratingId) {
-		this.ratingId = ratingId;
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 
 	public int getBookRating() {
@@ -50,12 +67,12 @@ public class CustomerReview {
 		this.bookRating = bookRating;
 	}
 
-	public String getReviewHeadling() {
-		return reviewHeadling;
+	public String getReviewHeadline() {
+		return reviewHeadline;
 	}
 
-	public void setReviewHeadling(String reviewHeadling) {
-		this.reviewHeadling = reviewHeadling;
+	public void setReviewHeadline(String reviewHeadline) {
+		this.reviewHeadline = reviewHeadline;
 	}
 
 	public String getReviewComment() {
@@ -65,7 +82,17 @@ public class CustomerReview {
 	public void setReviewComment(String reviewComment) {
 		this.reviewComment = reviewComment;
 	}
-	
-	
 
+	public BookInformation getBook() {
+		return book;
+	}
+
+	public void setBook(BookInformation book) {
+		this.book = book;
+	}
+
+	
+	
+	
+	
 }

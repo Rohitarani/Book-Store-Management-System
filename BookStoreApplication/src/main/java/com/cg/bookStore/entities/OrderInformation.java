@@ -1,16 +1,15 @@
 package com.cg.bookStore.entities;
 
 import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,9 +25,29 @@ public class OrderInformation {
 	@SequenceGenerator(name="orderIdGenerator", initialValue=1000)
 	private int orderId;
 	
-	@ManyToOne
-	@JoinColumn(name="customer_id", referencedColumnName = "customer_id")
-	private CustomerInformation customerDetails = new CustomerInformation();
+	@Column(name = "recipient_name")
+	@Size(min=8, max=30)
+	private String recipientName;
+	
+	@Column(name = "recipient_phone_no")
+	@Size(min=10, max=15)
+	private String recipientPhoneNumber;
+
+	@Column(name = "street_address")
+	@Size(min=10, max=128)
+	private String streetAddress;
+	
+	@Column(name = "city")
+	@Size(min=3, max=32)
+	private String city;
+
+	@Column(name = "zip_code")
+	@Size(min=3, max=24)
+	private Integer zipCode;
+
+	@Column(name = "country")
+	@Size(min=3, max=64)
+	private String country;
 
 	@Column(name="shipping_address")
 	private String shippingAddress;
@@ -36,11 +55,8 @@ public class OrderInformation {
 	@Column(name="quantity")
 	private int quantity;
 	
-	@Column(name="subtotal")
-	private float subTotal;
-	
-	@Column(name="total")
-	private float total;
+	@Column(name="total_price")
+	private float totalPrice;
 	
 	@Column(name="order_status")
 	private String orderStatus;
@@ -50,14 +66,6 @@ public class OrderInformation {
 	
 	@Column(name="order_date")
 	private LocalDate orderDate;
-	
-	public LocalDate getOrderDate() {
-		return orderDate;
-	}
-
-	public void setOrderDate(LocalDate orderDate) {
-		this.orderDate = orderDate;
-	}
 
 	public int getOrderId() {
 		return orderId;
@@ -67,12 +75,52 @@ public class OrderInformation {
 		this.orderId = orderId;
 	}
 
-	public CustomerInformation getCustomerDetails() {
-		return customerDetails;
+	public String getRecipientName() {
+		return recipientName;
 	}
 
-	public void setCustomerDetails(CustomerInformation customerDetails) {
-		this.customerDetails = customerDetails;
+	public void setRecipientName(String recipientName) {
+		this.recipientName = recipientName;
+	}
+
+	public String getRecipientPhoneNumber() {
+		return recipientPhoneNumber;
+	}
+
+	public void setRecipientPhoneNumber(String recipientPhoneNumber) {
+		this.recipientPhoneNumber = recipientPhoneNumber;
+	}
+
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Integer getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(Integer zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getShippingAddress() {
@@ -91,20 +139,12 @@ public class OrderInformation {
 		this.quantity = quantity;
 	}
 
-	public float getSubTotal() {
-		return subTotal;
+	public float getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setSubTotal(float subTotal) {
-		this.subTotal = subTotal;
-	}
-
-	public float getTotal() {
-		return total;
-	}
-
-	public void setTotal(float total) {
-		this.total = total;
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public String getOrderStatus() {
@@ -122,8 +162,12 @@ public class OrderInformation {
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-	
-	
-	
 
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
+	}
 }

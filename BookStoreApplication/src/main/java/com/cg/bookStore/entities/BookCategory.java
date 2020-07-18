@@ -27,6 +27,7 @@ public class BookCategory {
 	@Column(name="category_name")
 	@Size(min=5, max=30)
 	private String categoryName;
+	
 
 	public int getCategoryId() {
 		return categoryId;

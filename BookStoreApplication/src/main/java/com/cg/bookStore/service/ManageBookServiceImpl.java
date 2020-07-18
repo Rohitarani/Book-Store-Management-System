@@ -1,7 +1,6 @@
 package com.cg.bookStore.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -11,83 +10,94 @@ import org.springframework.stereotype.Service;
 import com.cg.bookStore.dao.BookStoreDao;
 import com.cg.bookStore.entities.BookInformation;
 import com.cg.bookStore.exceptions.BookException;
-import com.cg.bookStore.exceptions.CategoryException;
+import com.cg.bookStore.util.BookStoreConstants;
 
 @Service
 @Transactional
 public class ManageBookServiceImpl implements ManageBookService {
 
 	@Autowired
-	private BookStoreDao dao;
+	private BookStoreDao bookStoreDao;
 	
 	@Override
 	public String deleteBook(int bookId) throws BookException {
-		if(dao.deleteBook(bookId)) {
-			return "Book deleted";
+		if(bookStoreDao.bookExists(bookId)) {
+			bookStoreDao.deleteBook(bookId);
+			return BookStoreConstants.BOOK_DELETED;
 		}
-		
-		throw new BookException("Book not found");
+		throw new BookException(BookStoreConstants.BOOK_DOES_NOT_EXIST);
 	}
 	
 	public String createBook(BookInformation book) throws BookException{
+		String bookTitle=book.getTitle();
+		String bookDesc=book.getDescription();
+		String bookAuthor=book.getAuthor();
+		String ISBNnum=book.getIsbnNumber();
 		
-		BookInformation bookInfo=new BookInformation();
-		LocalDateTime now = LocalDateTime.now();
-		String bookTitle=bookInfo.getTitle();
-		String bookDesc=bookInfo.getDescription();
-		String bookAuthor=bookInfo.getAuthor();
-		bookInfo.getPrice();
-		String ISBNnum=bookInfo.getIsbnNumber();
-		bookInfo.getPublishDate();
-		
-		
-		
-		bookInfo.setLastUpdateTime(LocalDate.now());
 		if(bookTitle.isEmpty()) {
-			throw new BookException("Cannot add empty book title");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_TITLE_EMPTY);
 		}
 		
-		if(bookTitle.length()<10 || bookTitle.length()>128) {
-			throw new BookException("book title cannot be less than 5 characters and more than 30");
+		if(bookTitle.length()<5 || bookTitle.length()>128) {
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_TITLE);
 		}
 		
 		
 		if(bookDesc.isEmpty()) {
-			throw new BookException("Cannot add empty book description");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_DESSCRIPTION_EMPTY);
 		}
 		
 		if(bookDesc.length()<200 || bookDesc.length()>2000) {
-			throw new BookException("book description cannot be less than 200 characters and more than 2000");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_DECRIPTION_);
 		}
 		
 		
 		if(bookAuthor.isEmpty()) {
-			throw new BookException("Cannot add empty author name");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_AUTHOR_EMPTY);
 		}
 		
 		if(bookAuthor.length()<5 || bookAuthor.length()>65) {
-			throw new BookException("author name cannot be less than 5 characters and more than 65");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_AUTHOR_);
 		}
 		
 		
 		if(ISBNnum.isEmpty()) {
-			throw new BookException("Cannot add empty ISBN number");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_ISBN_EMPTY);
 		}
 		
 		if(ISBNnum.length()<10 || ISBNnum.length()>15) {
-			throw new BookException("ISBN number cannot be less than 10 characters and more than 15");
+			throw new BookException(BookStoreConstants.BOOK_VALIDATION_ISBN_);
 		}
-		return "added";
 		
+		if(bookStoreDao.addBook(book)) {
+			return BookStoreConstants.BOOK_ADDED;
+		}
 		
+		return BookStoreConstants.BOOK_ERROR;
+		
+
 	}
 	
 	public String updateBook(BookInformation book) throws BookException{
-		return "";
+		if(bookStoreDao.bookExists(book.getTitle())) {
+			throw new BookException(BookStoreConstants.BOOK_EXISTS);
+		}
+		else {
+			if(bookStoreDao.updateBookInfo(book)) {
+				return BookStoreConstants.BOOK_UPDATED;
+			}
+		}
+		throw new BookException(BookStoreConstants.BOOK_ERROR);
 	}
 	
-	public String displayBook(int bookId) throws BookException{
-		return "";
+	public List<BookInformation> displayBooks() throws BookException{
+		List<BookInformation>  allBooks= bookStoreDao.listAllBooks();
+		if(allBooks.isEmpty()) {
+			throw new BookException(BookStoreConstants.BOOK_DOES_NOT_EXIST);
+		}
+		
+		return allBooks;
+			
 	}
 
 }

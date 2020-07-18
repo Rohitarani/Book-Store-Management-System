@@ -46,6 +46,10 @@ public class CustomerInformation {
 	@Size(min=10, max=15)
 	private String phoneNumber;
 
+	@Column(name = "address")
+	@Size(min=10, max=128)
+	private String address;
+	
 	@Column(name = "city")
 	@Size(min=3, max=32)
 	private String city;
@@ -60,6 +64,8 @@ public class CustomerInformation {
 	
 	@Column(name="register_date")
 	private LocalDate registerDate;
+	
+	
 	
 	public String getFullName() {
 		return fullName;
