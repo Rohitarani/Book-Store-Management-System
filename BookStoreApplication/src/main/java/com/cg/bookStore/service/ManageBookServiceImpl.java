@@ -29,7 +29,7 @@ public class ManageBookServiceImpl implements ManageBookService {
 	}
 	
 	
-	
+	//o
 	public String createBook(BookInformation book) throws BookException{
 		String bookTitle=book.getTitle();
 		String bookDesc=book.getDescription();
