@@ -26,10 +26,11 @@ public class ManageBookServiceImpl implements ManageBookService {
 			return BookStoreConstants.BOOK_DELETED;
 		}
 		throw new BookException(BookStoreConstants.BOOK_DOES_NOT_EXIST);
+		
+		
 	}
 	
 	
-	//o
 	public String createBook(BookInformation book) throws BookException{
 		String bookTitle=book.getTitle();
 		String bookDesc=book.getDescription();
