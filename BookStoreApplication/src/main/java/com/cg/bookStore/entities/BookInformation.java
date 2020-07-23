@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
  
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name="bookstore_book")
@@ -53,6 +54,18 @@ public class BookInformation {
 	@Column(name="price")
 	private float price;
 	
+	@Column(name="BookImage")
+	private byte[] bookImage;
+	
+	
+	public byte[] getBookImage() {
+		return bookImage;
+	}
+
+	public void setBookImage(byte[] bookImage) {
+		this.bookImage = bookImage;
+	}
+
 	@ManyToOne
 	@JoinColumn(name="category_id", referencedColumnName = "category_id")
 	private BookCategory category = new BookCategory();

@@ -9,7 +9,7 @@ public class BookStoreConstants {
 	public static final String CATEGORY_DELETED = "category deleted";
 	public static final String CATEGORY_DOES_NOT_EXIST="Category does not exist";
 	public static final String CATEGORY_UPDATED="category updated";
-
+	public static final String IMG_TYPE=".jpeg";
 	
 	public static final String EMPTY_BOOK="cannot add empty book";
 	public static final String BOOK_VALIDATION_TITLE_EMPTY="Book title cannot be empty";

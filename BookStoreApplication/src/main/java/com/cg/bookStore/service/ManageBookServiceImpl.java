@@ -1,11 +1,15 @@
 package com.cg.bookStore.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cg.bookStore.dao.BookStoreDao;
 import com.cg.bookStore.entities.BookInformation;
@@ -52,12 +56,25 @@ public class ManageBookServiceImpl implements ManageBookService {
 	 * @throws BookException - When that book does already exists in database, exception is thrown. 
                 *Created By                              - Rohita Rani
                 *Created Date                            - 17-Jul-2020                           	 
+	 * @throws IOException 
 	 ********************************************/
-	public String createBook(BookInformation book) throws BookException{
+	private String imgPath;
+	public String createBook(BookInformation book,MultipartFile file) throws BookException, IOException{
 		String bookTitle=book.getTitle();
 		String bookDesc=book.getDescription();
 		String bookAuthor=book.getAuthor();
 		String ISBNnum=book.getIsbnNumber();
+		
+		
+		byte[] arr=file.getBytes();
+		book.setBookImage(arr);
+		//BookInformation book=new BookInformation();
+		FileOutputStream fos=new FileOutputStream(imgPath+book.getBookId()+BookStoreConstants.IMG_TYPE);
+		fos.write(arr);
+		fos.close();
+		
+		
+		
 		
 		if(bookTitle.isEmpty()) {
 			throw new BookException(BookStoreConstants.BOOK_VALIDATION_TITLE_EMPTY);
