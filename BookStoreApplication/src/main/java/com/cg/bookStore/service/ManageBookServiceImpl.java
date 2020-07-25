@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cg.bookStore.dao.BookStoreDao;
+import com.cg.bookStore.dto.BookForm;
+import com.cg.bookStore.entities.BookCategory;
 import com.cg.bookStore.entities.BookInformation;
 import com.cg.bookStore.exceptions.BookException;
 import com.cg.bookStore.exceptions.CategoryException;
@@ -58,67 +60,36 @@ public class ManageBookServiceImpl implements ManageBookService {
                 *Created Date                            - 17-Jul-2020                           	 
 	 * @throws IOException 
 	 ********************************************/
-	private String imgPath;
-	public String createBook(BookInformation book,MultipartFile file) throws BookException, IOException{
-		String bookTitle=book.getTitle();
-		String bookDesc=book.getDescription();
-		String bookAuthor=book.getAuthor();
-		String ISBNnum=book.getIsbnNumber();
+	
+	public String createBook(BookForm book) throws BookException{
+		BookInformation binfo=new BookInformation();
+		BookCategory cinfo=bookStoreDao.viewCategory(book.getCategoryId());
+		binfo.setTitle(book.getTitle());
+		binfo.setAuthor(book.getAuthor());
+		binfo.setDescription(book.getDescription());
+		binfo.setPrice(book.getPrice());
+		binfo.setIsbnNumber(book.getIsbnNumber());
+		binfo.setPublishDate(book.getPublishDate());
+		binfo.setCategory(cinfo);
+		bookStoreDao.addBook(binfo);
 		
 		
-		byte[] arr=file.getBytes();
-		book.setBookImage(arr);
-		//BookInformation book=new BookInformation();
-		FileOutputStream fos=new FileOutputStream(imgPath+book.getBookId()+BookStoreConstants.IMG_TYPE);
-		fos.write(arr);
-		fos.close();
+		if (cinfo == null)
+			throw new BookException(BookStoreConstants.CATEGORY_DOES_NOT_EXIST);
 		
-		
-		
-		
-		if(bookTitle.isEmpty()) {
+		if(book.getTitle().isEmpty()) {
 			throw new BookException(BookStoreConstants.BOOK_VALIDATION_TITLE_EMPTY);
 		}
 		
-		if(bookTitle.length()<5 || bookTitle.length()>128) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_TITLE);
-		}
 		
-		
-		if(bookDesc.isEmpty()) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_DESSCRIPTION_EMPTY);
-		}
-		
-		if(bookDesc.length()<200 || bookDesc.length()>2000) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_DECRIPTION_);
-		}
-		
-		
-		if(bookAuthor.isEmpty()) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_AUTHOR_EMPTY);
-		}
-		
-		if(bookAuthor.length()<5 || bookAuthor.length()>65) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_AUTHOR_);
-		}
-		
-		
-		if(ISBNnum.isEmpty()) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_ISBN_EMPTY);
-		}
-		
-		if(ISBNnum.length()<10 || ISBNnum.length()>15) {
-			throw new BookException(BookStoreConstants.BOOK_VALIDATION_ISBN_);
-		}
-		
-		if(bookStoreDao.bookExists(bookTitle)) {
+		if(bookStoreDao.bookExists(book.getTitle())) {
 			throw new BookException(BookStoreConstants.BOOK_EXISTS);
 		}
-		if(bookStoreDao.addBook(book)) {
-			return BookStoreConstants.BOOK_ADDED;
-		}
 		
-		return BookStoreConstants.BOOK_ERROR;
+		return "Book Added";
+		
+		
+		
 		
 
 	}

@@ -48,24 +48,12 @@ public class BookInformation {
 	@Column(name="publish_date")
 	private LocalDate publishDate;
 	
-	@Column(name="last_update_time")
-	private LocalDate lastUpdateTime;
+	
 	
 	@Column(name="price")
 	private float price;
 	
-	@Column(name="BookImage")
-	private byte[] bookImage;
 	
-	
-	public byte[] getBookImage() {
-		return bookImage;
-	}
-
-	public void setBookImage(byte[] bookImage) {
-		this.bookImage = bookImage;
-	}
-
 	@ManyToOne
 	@JoinColumn(name="category_id", referencedColumnName = "category_id")
 	private BookCategory category = new BookCategory();
@@ -118,13 +106,7 @@ public class BookInformation {
 		this.publishDate = publishDate;
 	}
 
-	public LocalDate getLastUpdateTime() {
-		return lastUpdateTime;
-	}
-
-	public void setLastUpdateTime(LocalDate lastUpdateTime) {
-		this.lastUpdateTime = lastUpdateTime;
-	}
+	
 
 	public float getPrice() {
 		return price;
